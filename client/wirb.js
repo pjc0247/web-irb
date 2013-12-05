@@ -107,6 +107,12 @@ init = function(){
 		}
 	}
 	document.body.onkeydown = function(e){
+		var apply_history = function(t){
+			t.innerText = t.innerText.substring( 0, t.innerText.length - (t._buf.length) );
+			append_text( t, t._history[ t._history_cur ] );
+			t._buf = t._history[ t._history_cur ];
+		}
+
 		if( e.keyCode == 8 ){
 			
 			if( _active_tab._buf.length != 0 )
@@ -117,10 +123,8 @@ init = function(){
 		// history
 		else if( e.keyCode == 38 ){
 			t = _active_tab;
-			
-			t.innerText = t.innerText.substring( 0, t.innerText.length - (t._buf.length) );
-			append_text( t, t._history[ t._history_cur ] );
-			t._buf = t._history[ t._history_cur ];
+
+			apply_history(t);
 
 			if( t._history_cur != 0 )
 				t._history_cur -= 1;
@@ -130,10 +134,8 @@ init = function(){
 			
 			if( t._history_cur != t._history.length-1 )
 				t._history_cur += 1;
-
-			t.innerText = t.innerText.substring( 0, t.innerText.length - (t._buf.length) );
-			append_text( t, t._history[ t._history_cur ] );
-			t._buf = t._history[ t._history_cur ];
+			
+			apply_history(t);
 		}
 	}
 }
