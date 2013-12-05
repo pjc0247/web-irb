@@ -136,9 +136,6 @@ init = function(){
 			t._buf = t._history[ t._history_cur ];
 		}
 	}
-
-	setInterval( function(){		
-	}, 1000);
 }
 
 init_ws = function(){
@@ -169,6 +166,8 @@ init_ws = function(){
 
 	_ws.bind( SessionId, function(msg){
 	});
+
+	// on eval result
 	_ws.bind( EvalResult, function(msg){
 		r = slice(msg);
 
