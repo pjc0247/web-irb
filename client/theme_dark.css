@@ -1,0 +1,26 @@
+body {
+	background : #000;
+	color : rgb(0,255,0);
+}
+
+#wait {
+	background : rgb(255,255,255);
+	opacity : 0.8;
+}
+
+#wait div {
+	color : rgb(0,255,0);
+}
+
+ul.tab_head li {
+	background  : #000;
+	
+}
+ul.tab_head li a {
+	color : rgb(0,255,0);
+}
+
+html ul.tab_head li.tab_active_head, html ul.tab_head li.tab_active_head a:hover  {
+	background: rgb(0,0,0);
+	border : 2px solid #fff;
+}
