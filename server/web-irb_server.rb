@@ -63,25 +63,25 @@ EM.run {
       $_stdout.string = ""
 
       begin
-      reflector = Reflector.new( $buf[b] + es )
+        reflector = Reflector.new( $buf[b] + es )
       
-      e = false
+        e = false
 
-      if reflector.level != $level[b]
-        ws.send "#{EvalLevelChanged}:#{sid}:#{reflector.level}"
-      end
-      if reflector.syntax_error? == true
-        ws.send "#{EvalError}:#{sid}:#{reflector.syntax_error}"
-        e = true
-      elsif reflector.level == 0
-        ret = b.eval( $buf[b] + es )
+        if reflector.level != $level[b]
+          ws.send "#{EvalLevelChanged}:#{sid}:#{reflector.level}"
+        end
+        if reflector.syntax_error? == true
+          ws.send "#{EvalError}:#{sid}:#{reflector.syntax_error}"
+          e = true
+        elsif reflector.level == 0
+          ret = b.eval( $buf[b] + es )
 
-        $buf[b] = ""
-        e = true
-      end
+          $buf[b] = ""
+          e = true
+        end
       
-      $buf[b] += es + "\n" if e == false
-      $level[b] = reflector.level
+        $buf[b] += es + "\n" if e == false
+        $level[b] = reflector.level
       rescue
         ws.send "#{EvalError}:#{sid}:#{$!}"
       end
