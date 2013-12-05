@@ -1,0 +1,41 @@
+<html>
+
+<head>
+	<title></title>
+
+	<link rel="stylesheet" media="screen" type="text/css" href="theme_core.css" />
+	<link rel="stylesheet" media="screen" type="text/css" href="theme_dark.css" />
+</head>
+
+<body>
+	<h1>
+	Web Interactive Ruby interpreter
+	</h1>
+
+	<div id="workspace">
+		<ul class="tab_head">
+			<li class="tab_active_head"><a href="#tab">workspace1</a></li>
+			<li id="tab_add"><a href="#add_tab">+</a></li>
+		</ul>
+
+		<div id="tab_content_container">
+			<pre>
+			<div id="tab1" class="tab_content" style="display: block;">irb(main):001:0> </div>
+			<div id="tab1" class="tab_content" style="display: none;">asdfasdf</div>
+			</pre>
+		</div>
+	</div>
+
+	
+	<div id="wait">
+		<div>
+				please wait for connect...
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script src="ws.js"></script>
+<script src="protocol.js"></script>
+<script src="wirb.js"></script>
