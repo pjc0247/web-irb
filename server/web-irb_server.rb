@@ -14,11 +14,11 @@ $stdout = $_stdout
 
 def gb(_sid)
     def help
-		puts "Web Interactive Ruby Interpreter\n\n"
-		puts "  _sid : current session's id"
+      puts "Web Interactive Ruby Interpreter\n\n"
+      puts "  _sid : current session's id"
     end
 
-	return binding
+  return binding
 end
 def slice(msg)
    pn = 0
@@ -39,7 +39,7 @@ EM.run {
 
     ws.onopen { |handshake|
       $clients.push ws
-	  $session[ws] = Hash.new
+    $session[ws] = Hash.new
 
        ws.send "100:welcome"
     }
@@ -49,52 +49,52 @@ EM.run {
     ws.onmessage { |msg|
       pn, data = slice(msg)
 
-	  case pn.to_i
-		when CreateSession
-		  b = gb(data)
-		  $session[ws][data] = b
-		  $level[b] = 0
-		  $buf[b] = ""
-		when Eval
-		  sid, es = slice(data)
-	
-		  b = $session[ws][sid]
+    case pn.to_i
+    when CreateSession
+      b = gb(data)
+      $session[ws][data] = b
+      $level[b] = 0
+      $buf[b] = ""
+    when Eval
+      sid, es = slice(data)
+  
+      b = $session[ws][sid]
 
-		  $_stdout.string = ""
+      $_stdout.string = ""
 
-		  begin
-			reflector = Reflector.new( $buf[b] + es )
-			
-			e = false
+      begin
+      reflector = Reflector.new( $buf[b] + es )
+      
+      e = false
 
-			if reflector.level != $level[b]
-			  ws.send "#{EvalLevelChanged}:#{sid}:#{reflector.level}"
-			end
-			if reflector.syntax_error? == true
-			  ws.send "#{EvalError}:#{sid}:#{reflector.syntax_error}"
-			  e = true
-			elsif reflector.level == 0
-			  ret = b.eval( $buf[b] + es )
+      if reflector.level != $level[b]
+        ws.send "#{EvalLevelChanged}:#{sid}:#{reflector.level}"
+      end
+      if reflector.syntax_error? == true
+        ws.send "#{EvalError}:#{sid}:#{reflector.syntax_error}"
+        e = true
+      elsif reflector.level == 0
+        ret = b.eval( $buf[b] + es )
 
-			  $buf[b] = ""
-			  e = true
-			end
-			
-			$buf[b] += es + "\n" if e == false
-			$level[b] = reflector.level
-		  rescue
-		    ws.send "#{EvalError}:#{sid}:#{$!}"
-		  end
-		  out = $_stdout.string
+        $buf[b] = ""
+        e = true
+      end
+      
+      $buf[b] += es + "\n" if e == false
+      $level[b] = reflector.level
+      rescue
+        ws.send "#{EvalError}:#{sid}:#{$!}"
+      end
+      out = $_stdout.string
 
-		  if out[out.length-1] == "\n"
-		    out.chop!
-		  end
+      if out[out.length-1] == "\n"
+        out.chop!
+      end
 
-		  ws.send "#{EvalResult}:#{sid}:#{out}" if out != ""
-		  ws.send "#{EvalResult}:#{sid}:=>#{ret}" if ret != nil
-		  ws.send "#{EndResult}:#{sid}"
-	  end
+      ws.send "#{EvalResult}:#{sid}:#{out}" if out != ""
+      ws.send "#{EvalResult}:#{sid}:=>#{ret}" if ret != nil
+      ws.send "#{EndResult}:#{sid}"
+    end
     }
   end
 }
